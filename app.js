@@ -2,19 +2,25 @@ const city = document.getElementById("city");
 const units = document.getElementById("units");
 const search = document.getElementById("search");
 const gps = document.querySelector(".location");
+const gpsCont =document.querySelector('.by-location')
 const showWeather = document.querySelector(".show-weather");
-const showText = document.querySelector(".show-text");
 const form = document.querySelector("form");
+const zip = document.getElementById('zip');
 
 search.addEventListener("click", (e) => {
     e.preventDefault();
-    if (!form.checkValidity()) {
-        city.value = city.validationMessage; 
-        return
-    }
+  if (!form.city.checkValidity() && !form.zip.checkValidity()) {
+    zip.placeholder = 'Please fill at least one';
+    city.placeholder = "Please fill at least one";
+    return;
+  }
+  else if (!form.zip.checkValidity() && form.city.checkValidity()) {
+    getData(city.value);
+  } else {
+    getData(Number(zip.value));
+  }
+    start.chooseUnit(UNITS[units.value]);
   
-  getData(city.value);
-  start.chooseUnit(UNITS[units.value]);
 });
 
 const presentation = (data) => {
@@ -29,18 +35,22 @@ gps.addEventListener("click", (e) => {
       getData({lat:position.coords.latitude, lon:position.coords.longitude});
     });
   } else {
-    x.innerHTML = "Geolocation is not supported by this browser.";
+    gpsCont.innerHTML = "Geolocation is not supported by this browser.";
     }
     form.city.setAttribute("required", 'required');
 });
 
 const getData = (data) => {
     start.init(API_KEY);
-    if (typeof data !== 'object') {
-        start.chooseCity(data);
+  if (typeof data == 'object') {
+      start.coordinates(data);
+        
     }
+    else if (typeof data == 'number') {
+      start.setZip(data)
+  }
     else {
-        start.coordinates(data)
+        start.chooseCity(data);
 }
     start.chooseUnit(UNITS[units.value]);
     start.finish();

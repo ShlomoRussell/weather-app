@@ -13,15 +13,15 @@
     <form action="">
       <label for="city">By city</label>
       <input type="search" required name="q" id="city" />
-    
+      <label for="zip">By zip code</label>
+      <input type="search" required name="zip-code" id="zip">
       <button id="search" type="submit">search</button>
       <label for="units">Unit</label>
-
       <select name="units" required id="units">
         <option value="celsius">celsius</option>
         <option value="farenheit">farenheit</option>
       </select>
-      <span
+      <span class="by-location"
         >By location<button class="location">
           <img
             src="geo-alt-fill.svg"

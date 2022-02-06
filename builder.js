@@ -22,6 +22,11 @@ function builder() {
     cashe_key = `${coords.lat},${coords.lon}`;
   };
 
+
+  const setZip = (zip) => {
+    parameters.zip = zip;
+    cashe_key = zip;
+  }
   const chooseUnit = (unit) => {
     parameters.units = unit;
   };
@@ -36,6 +41,7 @@ function builder() {
     chooseCity: chooseCity,
     chooseUnit: chooseUnit,
     coordinates: coordinates,
+    setZip: setZip,
     finish: finish,
   };
 }
