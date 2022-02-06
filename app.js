@@ -8,10 +8,11 @@ const form = document.querySelector("form");
 const zip = document.getElementById('zip');
 
 search.addEventListener("click", (e) => {
-    e.preventDefault();
+  e.preventDefault();
+  const notValid='Please fill at least one'
   if (!form.city.checkValidity() && !form.zip.checkValidity()) {
-    zip.placeholder = 'Please fill at least one';
-    city.placeholder = "Please fill at least one";
+    zip.placeholder = notValid;
+    city.placeholder = notValid;
     return;
   }
   else if (!form.zip.checkValidity() && form.city.checkValidity()) {
@@ -24,9 +25,7 @@ search.addEventListener("click", (e) => {
   document.querySelectorAll('input[type="search"]').forEach(i=>i.placeholder="")
 });
 
-const presentation = (data) => {
-  showWeather.innerHTML += data.main.temp;
-};
+
 
 gps.addEventListener("click", (e) => {
   e.preventDefault();
@@ -38,7 +37,8 @@ gps.addEventListener("click", (e) => {
   } else {
     gpsCont.innerHTML = "Geolocation is not supported by this browser.";
     }
-    form.city.setAttribute("required", 'required');
+  form.city.setAttribute("required", 'required');
+  document.querySelectorAll('input[type="search"]').forEach(i=>i.placeholder="")
 });
 
 const getData = (data) => {
@@ -56,3 +56,15 @@ const getData = (data) => {
     start.chooseUnit(UNITS[units.value]);
     start.finish();
 }
+
+
+const presentation = (data) => {
+ const html=  Object.entries(data.main).map(k => {
+   return `<tr>
+    <td>${k[0].replace('_',' ')}</td>
+    <td>${k[1]}</td>
+    </tr>`;
+    
+  })
+  showWeather.innerHTML += html.join(' ');
+};
