@@ -20,7 +20,8 @@ search.addEventListener("click", (e) => {
     getData(Number(zip.value));
   }
     start.chooseUnit(UNITS[units.value]);
-  
+  form.reset()
+  document.querySelectorAll('input[type="search"]').forEach(i=>i.placeholder="")
 });
 
 const presentation = (data) => {
