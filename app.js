@@ -21,8 +21,11 @@ search.addEventListener("click",submit)
       input.placeholder = "Please fill in this field";
       loading.classList.add("invisible");
       return;
-    } else {
+    } else if (select) {
       getData(input.value, select.value);
+    }
+    else {
+      getData(input.value)
     }
     start.chooseUnit(UNITS[units.value]);
     form.reset();
