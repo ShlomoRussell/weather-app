@@ -45,7 +45,7 @@ gps.addEventListener("click", (e) => {
   } else {
     gpsCont.innerHTML = "Geolocation is not supported by this browser.";
   }
- input.placeholder = "";
+ document.querySelector('input[type="search"]').placeholder=""
 });
 
 const getData = (data,select) => {
