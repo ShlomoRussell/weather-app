@@ -16,32 +16,36 @@ function builder() {
     cashe_key = city;
   };
 
-  const coordinates = (coords) => {
+  const setCoordinates = (coords) => {
     parameters["lat"] = coords.lat;
     parameters["lon"] = coords.lon;
     cashe_key = `${coords.lat},${coords.lon}`;
   };
 
-
-  const setZip = (zip) => {
-    parameters.zip = zip;
+  const setZip = (zip, countryCode) => {
+    parameters.zip = `${zip},${countryCode}`;
     cashe_key = zip;
+  };
+  const setCountryCode = (countryCode) => {
+    parameters.countryCode = countryCode;
   }
+
   const chooseUnit = (unit) => {
     parameters.units = unit;
   };
 
   const finish = () => {
-      const finishUrl = Object.entries(parameters).map((k) => `${k[0]}=${k[1]}`);
-      console.log(baseUrl + finishUrl.join("&"));
+    const finishUrl = Object.entries(parameters).map((k) => `${k[0]}=${k[1]}`);
+    console.log(baseUrl + finishUrl.join("&"));
     return fetchApi(baseUrl + finishUrl.join("&"), cashe_key);
   };
   return {
     init: init,
     chooseCity: chooseCity,
     chooseUnit: chooseUnit,
-    coordinates: coordinates,
+    coordinates: setCoordinates,
     setZip: setZip,
+    setCountryCode:setCountryCode,
     finish: finish,
   };
 }

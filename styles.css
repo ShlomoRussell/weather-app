@@ -1,5 +1,42 @@
-.location{
-   border: none;
-   background-color: white;
-   
+body {
+  text-align: center;
+}
+h1 {
+  margin-top: 0;
+  margin-bottom: 1em;
+}
+.location {
+  border: none;
+  color: rgba(255, 255, 255, 0.55);
+}
+.location:hover {
+  color: rgba(255, 255, 255, 0.75);
+}
+header {
+  box-sizing: border-box;
+  margin: 0 ;
+  background-color: lightyellow;
+  padding: 2em;
+}
+.spinner-border {
+  z-index: 0;
+}
+.show-weather {
+  width: 60%;
+  height: 30em;
+  margin: 10px auto;
+}
+.show-weather thead {
+  text-align: center;
+  font-size: 2rem;
+}
+.show-weather tbody {
+  text-transform: capitalize;
+  background-color: #5DADE2;
+}
+.show-weather tbody tr {
+  border: 1px black solid;
+}
+.show-weather tbody tr td {
+  border: 1px black solid;
 }

@@ -5,7 +5,7 @@ async function fetchApi(apiAddress, cashe_key) {
     .then((data) => data.json())
     .then(
       (data) => (
-        (CITY_WEATHER_CACHE[cashe_key] = new Weather(data)), presentation(data)
+        (CITY_WEATHER_CACHE[cashe_key] = new Weather(data)), presentation(data,cashe_key)
       )
     );
 }
