@@ -1,37 +1,32 @@
-const city = document.getElementById("city");
 const units = document.getElementById("units");
 const search = document.getElementById("search");
 const gps = document.querySelector(".location");
 const gpsCont = document.querySelector(".by-location");
 const showWeather = document.querySelector(".show-weather");
 const form = document.querySelector("form");
-const zip = document.getElementById("zip");
 const links = document.querySelectorAll(".links");
 const loading = document.querySelector(".spinner-border");
 
+search.addEventListener("click", submit);
 
-search.addEventListener("click",submit)
-
-  function submit(e) {
-    e.preventDefault();
-    const input = document.querySelector('input[type="search"]');
-    const select = document.getElementById("country-list");
-    loading.classList.remove("invisible");
-    if (!form.checkValidity()) {
-      input.placeholder = "Please fill in this field";
-      loading.classList.add("invisible");
-      return;
-    } else if (select) {
-      getData(input.value, select.value);
-    }
-    else {
-      getData(input.value)
-    }
-    start.chooseUnit(UNITS[units.value]);
-    form.reset();
-    input.placeholder = "";
-};
-
+function submit(e) {
+  e.preventDefault();
+  const input = document.querySelector('input[type="search"]');
+  const select = document.getElementById("country-list");
+  loading.classList.remove("invisible");
+  if (!form.checkValidity()) {
+    input.placeholder = "Please fill in this field";
+    loading.classList.add("invisible");
+    return;
+  } else if (select) {
+    getData(input.value, select.value);
+  } else {
+    getData(input.value);
+  }
+  start.chooseUnit(UNITS[units.value]);
+  form.reset();
+  input.placeholder = "";
+}
 
 gps.addEventListener("click", (e) => {
   e.preventDefault();
@@ -45,24 +40,27 @@ gps.addEventListener("click", (e) => {
   } else {
     gpsCont.innerHTML = "Geolocation is not supported by this browser.";
   }
- document.querySelector('input[type="search"]').placeholder=""
+  document.querySelector('input[type="search"]').placeholder = "";
 });
 
-const getData = (data,select) => {
-  if (CITY_WEATHER_CACHE[data])
-    return presentation(CITY_WEATHER_CACHE[data], data);
-
+const getData = (data, select) => {
+  let cashe_key = data.lat ? `${data.lat},${data.lon}` : data;
+  if (
+    CITY_WEATHER_CACHE[cashe_key] &&
+    (new Date() - CITY_WEATHER_CACHE[cashe_key].timestamp) / 1000 <
+      REFRESH_CASHE
+  )
+    return presentation(CITY_WEATHER_CACHE[cashe_key], cashe_key);
   start.init(API_KEY);
   if (typeof data == "object") {
     start.coordinates(data);
   } else if (/^[0-9]*$/.test(data)) {
     start.setZip(data, countryList[select].toLowerCase());
-   // start.setCountryCode(countryList[select]);
   } else {
     start.chooseCity(data);
   }
   start.chooseUnit(UNITS[units.value]);
-  start.finish();
+  fetchApi(start.finish(), cashe_key);
 };
 
 const presentation = (data, cashe_key) => {
@@ -109,11 +107,11 @@ function toHtml(html) {
       ? '<label for="country-list">Choose a country</label><select required name="country"  id="country-list"><option value=""></option></select>'
       : ""
   }`;
-  if (html == 'zip') {
+  if (html == "zip") {
     const countries = document.getElementById("country-list");
     selectInnerHTML(countries);
   }
-  search.addEventListener("click",submit)
+  search.addEventListener("click", submit);
 }
 
 function checkRegex(rex, str) {

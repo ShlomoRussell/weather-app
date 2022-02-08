@@ -6,14 +6,13 @@ const UNITS = {
 function builder() {
   const baseUrl = "https://api.openweathermap.org/data/2.5/weather?";
   let parameters = null;
-  let cashe_key;
+
   const init = (appid) => {
     parameters = { appid: appid };
   };
 
   const chooseCity = (city) => {
-    parameters.q = city;
-    cashe_key = city;
+    parameters.q = city.replace(" ", "%20");
   };
 
   const setCoordinates = (coords) => {
@@ -24,11 +23,7 @@ function builder() {
 
   const setZip = (zip, countryCode) => {
     parameters.zip = `${zip},${countryCode}`;
-    cashe_key = zip;
   };
-  const setCountryCode = (countryCode) => {
-    parameters.countryCode = countryCode;
-  }
 
   const chooseUnit = (unit) => {
     parameters.units = unit;
@@ -37,16 +32,15 @@ function builder() {
   const finish = () => {
     const finishUrl = Object.entries(parameters).map((k) => `${k[0]}=${k[1]}`);
     console.log(baseUrl + finishUrl.join("&"));
-    return fetchApi(baseUrl + finishUrl.join("&"), cashe_key);
+    return baseUrl + finishUrl.join("&");
   };
   return {
-    init: init,
-    chooseCity: chooseCity,
-    chooseUnit: chooseUnit,
+    init,
+    chooseCity,
+    chooseUnit,
     coordinates: setCoordinates,
-    setZip: setZip,
-    setCountryCode:setCountryCode,
-    finish: finish,
+    setZip,
+    finish,
   };
 }
 

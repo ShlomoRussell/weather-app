@@ -1,4 +1,5 @@
 const CITY_WEATHER_CACHE = {};
+const REFRESH_CASHE = 60 * 60;
 
 async function fetchApi(apiAddress, cashe_key) {
   fetch(apiAddress)
